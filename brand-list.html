@@ -4,89 +4,94 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>브랜드 리스트</title>
+  <!-- Google Fonts: Roboto -->
   <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Roboto', sans-serif;
-      background-color: #f8f9fa;
+      background: #f8f9fa;
       margin: 0;
       padding: 20px;
-      color: #343a40;
     }
     h1 {
       text-align: center;
-      margin-bottom: 10px;
-      color: #212529;
+      margin-bottom: 20px;
+      color: #343a40;
     }
-    p {
-      text-align: center;
-      margin-bottom: 30px;
-      color: #6c757d;
-      font-size: 1.1em;
-    }
-    .container {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-    ul {
+    .brand-container {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
       gap: 20px;
-      padding: 0;
-      list-style: none;
     }
-    li {
+    .brand-card {
       background: #fff;
-      padding: 15px 20px;
-      border-radius: 8px;
+      padding: 15px;
+      border-radius: 10px;
       box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-      transition: transform 0.2s ease-in-out;
+      text-align: center;
+      transition: transform 0.2s;
     }
-    li:hover {
+    .brand-card:hover {
       transform: translateY(-5px);
     }
-    strong {
-      display: block;
+    .brand-name {
+      font-weight: bold;
       font-size: 1.2em;
+      margin-bottom: 10px;
       color: #007bff;
-      margin-bottom: 8px;
     }
-    a {
-      color: #343a40;
-      text-decoration: none;
-      font-size: 0.95em;
-      word-break: break-all;
+    .visit-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
     }
-    a:hover {
-      text-decoration: underline;
+    .visit-btn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
 <body>
-  <div class="container">
-    <h1>[ERSL] EZ 발주 - 브랜드 리스트</h1>
-    <p>등록된 브랜드 리스트입니다. 아래 브랜드를 클릭하여 해당 사이트로 이동하세요.</p>
-  
-    <ul id="brandList">
-      <!-- 브랜드 항목은 JavaScript로 동적으로 삽입됩니다 -->
-    </ul>
+  <h1>브랜드 리스트</h1>
+  <div class="brand-container" id="brandContainer">
+    <!-- 동적 브랜드 카드들이 여기에 생성됩니다 -->
   </div>
-  
+
   <script>
-    // 캐시 방지를 위한 버전 값 추가
+    // 캐시 방지를 위한 타임스탬프 추가
     const version = new Date().getTime();
     const fetchUrl = `https://storage.googleapis.com/master_piece_tag_datas/parsing_rules2.json?v=${version}`;
     
     fetch(fetchUrl)
       .then(response => response.json())
       .then(data => {
-        const ul = document.getElementById('brandList');
+        const container = document.getElementById('brandContainer');
         for (const url in data) {
           if (data.hasOwnProperty(url)) {
             const brand = data[url].brand;
-            const li = document.createElement('li');
-            li.innerHTML = `<strong>${brand}</strong><a href="${url}" target="_blank">${url}</a>`;
-            ul.appendChild(li);
+            // 카드 생성
+            const card = document.createElement('div');
+            card.classList.add('brand-card');
+            
+            // 브랜드명 표시
+            const nameEl = document.createElement('div');
+            nameEl.classList.add('brand-name');
+            nameEl.textContent = brand;
+            card.appendChild(nameEl);
+            
+            // "사이트 방문" 버튼 생성
+            const btn = document.createElement('button');
+            btn.classList.add('visit-btn');
+            btn.textContent = "사이트 방문";
+            btn.addEventListener('click', () => {
+              window.open(url, '_blank');
+            });
+            card.appendChild(btn);
+            
+            container.appendChild(card);
           }
         }
       })
