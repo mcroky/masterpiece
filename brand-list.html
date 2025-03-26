@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>브랜드 리스트</title>
+  <style>
+    body { font-family: Arial, sans-serif; }
+    ul { list-style: none; padding: 0; }
+    li { margin-bottom: 8px; }
+    a { text-decoration: none; color: #0066cc; }
+  </style>
+</head>
+<body>
+  <h1>[ERSL] EZ 발주 - 브랜드 리스트</h1>
+  <p>등록된 브랜드 리스트입니다.</p>
+  
+  <ul id="brandList"></ul>
+  
+  <script>
+    // 버전 값으로 캐시를 피하기 위한 쿼리 파라미터
+    const version = new Date().getTime();
+    const fetchUrl = `https://storage.googleapis.com/master_piece_tag_datas/parsing_rules2.json?v=${version}`;
+    
+    fetch(fetchUrl)
+      .then(response => response.json())
+      .then(data => {
+        const ul = document.getElementById('brandList');
+        // data 객체의 각 키(url)와 해당 객체의 brand 값을 사용
+        for (const url in data) {
+          if (data.hasOwnProperty(url)) {
+            const brand = data[url].brand;
+            const li = document.createElement('li');
+            li.innerHTML = `<strong>${brand}</strong> : <a href="${url}" target="_blank">${url}</a>`;
+            ul.appendChild(li);
+          }
+        }
+      })
+      .catch(error => {
+        console.error('브랜드 데이터를 불러오지 못했습니다:', error);
+      });
+  </script>
+</body>
+</html>
