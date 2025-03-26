@@ -4,21 +4,76 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>브랜드 리스트</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    body { font-family: Arial, sans-serif; }
-    ul { list-style: none; padding: 0; }
-    li { margin-bottom: 8px; }
-    a { text-decoration: none; color: #0066cc; }
+    body {
+      font-family: 'Roboto', sans-serif;
+      background-color: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+      color: #343a40;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 10px;
+      color: #212529;
+    }
+    p {
+      text-align: center;
+      margin-bottom: 30px;
+      color: #6c757d;
+      font-size: 1.1em;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 20px;
+      padding: 0;
+      list-style: none;
+    }
+    li {
+      background: #fff;
+      padding: 15px 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease-in-out;
+    }
+    li:hover {
+      transform: translateY(-5px);
+    }
+    strong {
+      display: block;
+      font-size: 1.2em;
+      color: #007bff;
+      margin-bottom: 8px;
+    }
+    a {
+      color: #343a40;
+      text-decoration: none;
+      font-size: 0.95em;
+      word-break: break-all;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
-  <h1>[ERSL] EZ 발주 - 브랜드 리스트</h1>
-  <p>등록된 브랜드 리스트입니다.</p>
+  <div class="container">
+    <h1>[ERSL] EZ 발주 - 브랜드 리스트</h1>
+    <p>등록된 브랜드 리스트입니다. 아래 브랜드를 클릭하여 해당 사이트로 이동하세요.</p>
   
-  <ul id="brandList"></ul>
+    <ul id="brandList">
+      <!-- 브랜드 항목은 JavaScript로 동적으로 삽입됩니다 -->
+    </ul>
+  </div>
   
   <script>
-    // 버전 값으로 캐시를 피하기 위한 쿼리 파라미터
+    // 캐시 방지를 위한 버전 값 추가
     const version = new Date().getTime();
     const fetchUrl = `https://storage.googleapis.com/master_piece_tag_datas/parsing_rules2.json?v=${version}`;
     
@@ -26,12 +81,11 @@
       .then(response => response.json())
       .then(data => {
         const ul = document.getElementById('brandList');
-        // data 객체의 각 키(url)와 해당 객체의 brand 값을 사용
         for (const url in data) {
           if (data.hasOwnProperty(url)) {
             const brand = data[url].brand;
             const li = document.createElement('li');
-            li.innerHTML = `<strong>${brand}</strong> : <a href="${url}" target="_blank">${url}</a>`;
+            li.innerHTML = `<strong>${brand}</strong><a href="${url}" target="_blank">${url}</a>`;
             ul.appendChild(li);
           }
         }
