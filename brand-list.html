@@ -60,6 +60,7 @@
     <!-- 브랜드 카드들이 동적으로 생성됩니다 -->
   </div>
   <script>
+    // 캐시 방지를 위한 타임스탬프 추가
     const version = new Date().getTime();
     const fetchUrl = `https://storage.googleapis.com/master_piece_tag_datas/parsing_rules2.json?v=${version}`;
     
@@ -72,25 +73,16 @@
             const brandInfo = data[url];
             const brand = brandInfo.brand;
             
-            // 카드 요소 생성
-            const card = document.createElement('div');
-            card.classList.add('brand-card');
-            
-            // 브랜드명 표시
-            const nameEl = document.createElement('div');
-            nameEl.classList.add('brand-name');
-            nameEl.textContent = brand;
-            card.appendChild(nameEl);
-            
-            // "사이트 방문" 링크 생성
-            const link = document.createElement('a');
-            link.classList.add('visit-btn');
-            link.textContent = "사이트 방문";
-            link.href = url;
-            link.target = "_blank";
-            card.appendChild(link);
-            
-            container.appendChild(card);
+            // 각 브랜드 카드의 HTML을 미리 만들어 삽입합니다.
+            const cardHTML = `
+              <div class="brand-card">
+                <div class="brand-name">${brand}</div>
+                <a class="visit-btn" href="${url}" target="_blank" rel="noreferrer noopener">
+                  사이트 방문
+                </a>
+              </div>
+            `;
+            container.insertAdjacentHTML('beforeend', cardHTML);
           }
         }
       })
