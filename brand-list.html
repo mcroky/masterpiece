@@ -2,11 +2,55 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>브랜드 리스트</title>
+  <!-- Google Fonts: Roboto -->
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
   <style>
-    /* iframe은 화면에 보이지 않게 숨깁니다. */
-    .prefetch-frame {
-      display: none;
+    body {
+      font-family: 'Roboto', sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 20px;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 20px;
+      color: #343a40;
+    }
+    .brand-container {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+    }
+    .brand-card {
+      background: #fff;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .brand-card:hover {
+      transform: translateY(-5px);
+    }
+    .brand-name {
+      font-weight: bold;
+      font-size: 1.1em;
+      margin-bottom: 10px;
+      color: #007bff;
+    }
+    .visit-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .visit-btn:hover {
+      background: #0056b3;
     }
   </style>
 </head>
@@ -15,30 +59,30 @@
   <div class="brand-container" id="brandContainer">
     <!-- 브랜드 카드들이 동적으로 생성됩니다 -->
   </div>
-  <div id="prefetchContainer"></div>
   <script>
     const version = new Date().getTime();
     const fetchUrl = `https://storage.googleapis.com/master_piece_tag_datas/parsing_rules2.json?v=${version}`;
-
+    
     fetch(fetchUrl)
       .then(response => response.json())
       .then((data) => {
         const container = document.getElementById('brandContainer');
-        const prefetchContainer = document.getElementById('prefetchContainer');
         for (const url in data) {
           if (data.hasOwnProperty(url)) {
             const brandInfo = data[url];
             const brand = brandInfo.brand;
             
-            // 브랜드 카드 생성
+            // 카드 요소 생성
             const card = document.createElement('div');
             card.classList.add('brand-card');
             
+            // 브랜드명 표시
             const nameEl = document.createElement('div');
             nameEl.classList.add('brand-name');
             nameEl.textContent = brand;
             card.appendChild(nameEl);
             
+            // "사이트 방문" 버튼 생성
             const btn = document.createElement('button');
             btn.classList.add('visit-btn');
             btn.textContent = "사이트 방문";
@@ -46,14 +90,14 @@
               window.open(url, '_blank');
             });
             card.appendChild(btn);
-            
+          
             container.appendChild(card);
-
-            // 페이지 로드시 미리 URL을 불러오기 위한 숨겨진 iframe 생성
-            const iframe = document.createElement('iframe');
-            iframe.classList.add('prefetch-frame');
-            iframe.src = url;
-            prefetchContainer.appendChild(iframe);
+            
+            // 페이지 로드시 prefetch를 위한 link 태그 추가 (head에 삽입)
+            const prefetchLink = document.createElement('link');
+            prefetchLink.rel = "prefetch";
+            prefetchLink.href = url;
+            document.head.appendChild(prefetchLink);
           }
         }
       })
