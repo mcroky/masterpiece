@@ -43,10 +43,10 @@
     .visit-btn {
       background: #007bff;
       color: #fff;
-      border: none;
+      text-decoration: none;
+      display: inline-block;
       padding: 8px 12px;
       border-radius: 5px;
-      cursor: pointer;
       transition: background 0.3s;
     }
     .visit-btn:hover {
@@ -82,22 +82,15 @@
             nameEl.textContent = brand;
             card.appendChild(nameEl);
             
-            // "사이트 방문" 버튼 생성
-            const btn = document.createElement('button');
-            btn.classList.add('visit-btn');
-            btn.textContent = "사이트 방문";
-            btn.addEventListener('click', () => {
-              window.open(url, '_blank');
-            });
-            card.appendChild(btn);
-          
-            container.appendChild(card);
+            // "사이트 방문" 링크 생성
+            const link = document.createElement('a');
+            link.classList.add('visit-btn');
+            link.textContent = "사이트 방문";
+            link.href = url;
+            link.target = "_blank";
+            card.appendChild(link);
             
-            // 페이지 로드시 prefetch를 위한 link 태그 추가 (head에 삽입)
-            const prefetchLink = document.createElement('link');
-            prefetchLink.rel = "prefetch";
-            prefetchLink.href = url;
-            document.head.appendChild(prefetchLink);
+            container.appendChild(card);
           }
         }
       })
