@@ -82,9 +82,18 @@
     <!-- 브랜드 카드들이 동적으로 생성됩니다 -->
   </div>
   <script>
-    // 알파벳 버튼 생성
+    // 알파벳 버튼과 OTHER 버튼 생성
     const filterContainer = document.getElementById('filterContainer');
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    
+    // OTHER 버튼은 알파벳 이외의 문자용
+    const otherBtn = document.createElement('button');
+    otherBtn.className = 'filter-btn';
+    otherBtn.textContent = 'OTHER';
+    otherBtn.setAttribute('data-filter', 'OTHER');
+    filterContainer.appendChild(otherBtn);
+    
+    // 알파벳 버튼 생성
     alphabet.forEach(letter => {
       const btn = document.createElement('button');
       btn.className = 'filter-btn';
@@ -112,7 +121,6 @@
         // active 클래스 토글
         document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
         this.classList.add('active');
-
         const letter = this.getAttribute('data-filter');
         filterBrands(letter);
       });
@@ -130,7 +138,11 @@
           if (data.hasOwnProperty(url)) {
             const brandInfo = data[url];
             const brand = brandInfo.brand;
-            const firstLetter = brand.charAt(0).toUpperCase();
+            let firstLetter = brand.charAt(0).toUpperCase();
+            // 알파벳 A-Z가 아니면 OTHER로 지정
+            if (!/^[A-Z]$/.test(firstLetter)) {
+              firstLetter = 'OTHER';
+            }
 
             // 각 브랜드 카드의 HTML 생성 (data-letter 속성 추가)
             const cardHTML = `
