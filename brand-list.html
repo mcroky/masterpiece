@@ -85,14 +85,7 @@
     // 알파벳 버튼과 OTHER 버튼 생성
     const filterContainer = document.getElementById('filterContainer');
     const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
-    
-    // OTHER 버튼은 알파벳 이외의 문자용
-    const otherBtn = document.createElement('button');
-    otherBtn.className = 'filter-btn';
-    otherBtn.textContent = 'OTHER';
-    otherBtn.setAttribute('data-filter', 'OTHER');
-    filterContainer.appendChild(otherBtn);
-    
+       
     // 알파벳 버튼 생성
     alphabet.forEach(letter => {
       const btn = document.createElement('button');
@@ -101,6 +94,12 @@
       btn.setAttribute('data-filter', letter);
       filterContainer.appendChild(btn);
     });
+    // OTHER 버튼은 알파벳 이외의 문자용
+    const otherBtn = document.createElement('button');
+    otherBtn.className = 'filter-btn';
+    otherBtn.textContent = 'OTHER';
+    otherBtn.setAttribute('data-filter', 'OTHER');
+    filterContainer.appendChild(otherBtn);
 
     // 필터 기능 함수
     function filterBrands(letter) {
