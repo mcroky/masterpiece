@@ -18,6 +18,23 @@
       margin-bottom: 20px;
       color: #343a40;
     }
+    .filter-container {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .filter-btn {
+      background: #007bff;
+      color: #fff;
+      border: none;
+      padding: 8px 12px;
+      margin: 0 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: #0056b3;
+    }
     .brand-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -56,10 +73,51 @@
 </head>
 <body>
   <h1>브랜드 리스트</h1>
+  <!-- 필터 버튼 컨테이너 -->
+  <div class="filter-container" id="filterContainer">
+    <button class="filter-btn active" data-filter="ALL">ALL</button>
+    <!-- 알파벳 버튼들을 JavaScript로 동적 생성 -->
+  </div>
   <div class="brand-container" id="brandContainer">
     <!-- 브랜드 카드들이 동적으로 생성됩니다 -->
   </div>
   <script>
+    // 알파벳 버튼 생성
+    const filterContainer = document.getElementById('filterContainer');
+    const alphabet = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+    alphabet.forEach(letter => {
+      const btn = document.createElement('button');
+      btn.className = 'filter-btn';
+      btn.textContent = letter;
+      btn.setAttribute('data-filter', letter);
+      filterContainer.appendChild(btn);
+    });
+
+    // 필터 기능 함수
+    function filterBrands(letter) {
+      const cards = document.querySelectorAll('.brand-card');
+      cards.forEach(card => {
+        const brandLetter = card.getAttribute('data-letter');
+        if (letter === 'ALL' || brandLetter === letter) {
+          card.style.display = 'block';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // 버튼 클릭 이벤트 리스너
+    document.querySelectorAll('.filter-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        // active 클래스 토글
+        document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+        this.classList.add('active');
+
+        const letter = this.getAttribute('data-filter');
+        filterBrands(letter);
+      });
+    });
+
     // 캐시 방지를 위한 타임스탬프 추가
     const version = new Date().getTime();
     const fetchUrl = `https://storage.googleapis.com/master_piece_tag_datas/parsing_rules2.json?v=${version}`;
@@ -72,10 +130,11 @@
           if (data.hasOwnProperty(url)) {
             const brandInfo = data[url];
             const brand = brandInfo.brand;
-            
-            // 각 브랜드 카드의 HTML을 미리 만들어 삽입합니다.
+            const firstLetter = brand.charAt(0).toUpperCase();
+
+            // 각 브랜드 카드의 HTML 생성 (data-letter 속성 추가)
             const cardHTML = `
-              <div class="brand-card">
+              <div class="brand-card" data-letter="${firstLetter}">
                 <div class="brand-name">${brand}</div>
                 <a class="visit-btn" href="${url}" target="_blank" rel="noreferrer noopener">
                   사이트 방문
