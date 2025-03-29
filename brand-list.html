@@ -22,19 +22,21 @@
       text-align: center;
       margin-bottom: 20px;
     }
-    .filter-btn {
-      background: #007bff;
-      color: #fff;
-      border: none;
-      padding: 8px 12px;
-      margin: 0 5px 10px;
-      border-radius: 5px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-    .filter-btn:hover, .filter-btn.active {
-      background: #0056b3;
-    }
+  .filter-btn {
+    background: none;
+    color: #007bff;
+    border: none;
+    padding: 0;
+    margin: 0 5px 10px;
+    cursor: pointer;
+    font-size: inherit;
+  }
+  
+  .filter-btn:hover,
+  .filter-btn.active {
+    color: #0056b3;
+    text-decoration: underline;
+  }
     .brand-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
