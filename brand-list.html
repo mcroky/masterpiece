@@ -19,24 +19,31 @@
       margin-bottom: 20px;
       color: #343a40;
     }
+    /* 로고 이미지 위치 조정 */
+    .logo {
+      display: inline-block;
+      vertical-align: middle;
+      margin-top: 5px; /* 이 값을 늘리면 이미지가 더 아래로 이동합니다 */
+      margin-right: 10px;
+    }
     .filter-container {
       text-align: center;
       margin-bottom: 20px;
     }
-  .filter-btn {
-    background: none;
-    color: #007bff;
-    border: none;
-    padding: 0;
-    margin: 0 5px 10px;
-    cursor: pointer;
-    font-size: inherit;
-  }
-  .filter-btn:hover,
-  .filter-btn.active {
-    color: #0056b3;
-    text-decoration: underline;
-  }
+    .filter-btn {
+      background: none;
+      color: #007bff;
+      border: none;
+      padding: 0;
+      margin: 0 5px 10px;
+      cursor: pointer;
+      font-size: inherit;
+    }
+    .filter-btn:hover,
+    .filter-btn.active {
+      color: #0056b3;
+      text-decoration: underline;
+    }
     .brand-container {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -75,7 +82,7 @@
 </head>
 <body>
   <h1>
-    <img src="https://lh3.googleusercontent.com/9ntC9pJYCuza-9UR6HaWe0bGk6PIWLN4RbScRu62s-ZUDEy1LxWA-DNPRI9ts2RSBUeOPVerDzNZFmvrRcAyhHNvR2E=s80">
+    <img class="logo" src="https://lh3.googleusercontent.com/9ntC9pJYCuza-9UR6HaWe0bGk6PIWLN4RbScRu62s-ZUDEy1LxWA-DNPRI9ts2RSBUeOPVerDzNZFmvrRcAyhHNvR2E=s80" alt="Logo">
     Brand List
   </h1>
   <!-- 필터 버튼 컨테이너 -->
